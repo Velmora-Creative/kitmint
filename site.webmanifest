@@ -1,0 +1,16 @@
+{
+  "name": "KitMint — Creator & Seller Utility Hub",
+  "short_name": "KitMint",
+  "description": "Free, private browser tools to compress images, calculate e-commerce profit margins, and format SEO text.",
+  "start_url": "/",
+  "display": "standalone",
+  "background_color": "#09090b",
+  "theme_color": "#6366f1",
+  "icons": [
+    {
+      "src": "/favicon.svg",
+      "sizes": "any",
+      "type": "image/svg+xml"
+    }
+  ]
+}

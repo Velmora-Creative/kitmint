@@ -1,0 +1,597 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="description" content="Compress PNG, JPG, and WebP images locally, calculate e-commerce profit margins &amp; break-even ROAS, and check Google SEO snippet lengths. 100% private, browser-based tools.">
+<meta name="theme-color" content="#09090b">
+<title>KitMint — Free Online Image Compressor, Profit Margin Calculator &amp; SEO Tools</title>
+<link rel="canonical" href="https://kitmint.pages.dev/">
+<link rel="icon" type="image/svg+xml" href="/favicon.svg">
+<link rel="manifest" href="/site.webmanifest">
+<meta property="og:title" content="KitMint — Free Online Image Compressor, Profit Margin Calculator &amp; SEO Tools">
+<meta property="og:description" content="Compress PNG, JPG, and WebP images locally, calculate e-commerce profit margins &amp; break-even ROAS, and check Google SEO snippet lengths. 100% private, browser-based tools.">
+<meta property="og:type" content="website">
+<meta property="og:url" content="https://kitmint.pages.dev/">
+<meta property="og:site_name" content="KitMint">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="KitMint — Free Online Image Compressor, Profit Margin Calculator &amp; SEO Tools">
+<meta name="twitter:description" content="Compress PNG, JPG, and WebP images locally, calculate e-commerce profit margins &amp; break-even ROAS, and check Google SEO snippet lengths. 100% private, browser-based tools.">
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "WebApplication",
+  "name": "KitMint",
+  "url": "https://kitmint.pages.dev/",
+  "description": "Free, browser-based utility suite for creators and online sellers: an image compressor and converter, an e-commerce profit margin and break-even ROAS calculator, and a text formatter with Google SEO snippet length checks. Everything runs locally in the browser with no uploads.",
+  "applicationCategory": "BusinessApplication",
+  "applicationSubCategory": "Utilities",
+  "operatingSystem": "All",
+  "browserRequirements": "Requires JavaScript and a modern web browser",
+  "isAccessibleForFree": true,
+  "offers": {
+    "@type": "Offer",
+    "price": "0",
+    "priceCurrency": "USD"
+  },
+  "featureList": [
+    "Compress and convert PNG, JPG and WebP images locally",
+    "Calculate e-commerce net profit, profit margin and break-even ROAS",
+    "Format text and check Google title tag and meta description length"
+  ]
+}
+</script>
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "FAQPage",
+  "mainEntity": [
+    {
+      "@type": "Question",
+      "name": "Are my images and financial numbers uploaded to a server?",
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": "No. KitMint runs entirely in your browser. Images are decoded and re-encoded with the HTML5 Canvas API, and your profit, margin and ROAS figures are calculated with JavaScript on your own device. Nothing is uploaded, stored or sent anywhere, so your files and numbers stay private. Close the tab and everything is gone."
+      }
+    },
+    {
+      "@type": "Question",
+      "name": "How do I compress PNG or JPG images to WebP without losing quality?",
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": "Drop your image into the Image Optimizer, choose WebP in the Convert to menu, and set the quality slider between 75% and 85%. At those settings WebP is usually far smaller than PNG or JPEG with no visible difference. The side-by-side preview and the size comparison show the result before you download, so you can raise the quality if you spot any change."
+      }
+    },
+    {
+      "@type": "Question",
+      "name": "How is Break-Even ROAS calculated for e-commerce products?",
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": "Break-even ROAS equals your selling price divided by your profit before ad spend. First subtract the product cost, shipping, packaging and platform fee from the selling price. For example, a 50 selling price with 30 in costs leaves 20 before ads, so break-even ROAS is 50 divided by 20, or 2.5x. If your ads return more than 2.5 in revenue for every 1 spent, each sale makes a profit."
+      }
+    },
+    {
+      "@type": "Question",
+      "name": "What is the ideal character limit for Google Title Tags and Meta Descriptions?",
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": "Aim for about 60 characters for title tags and about 160 characters for meta descriptions. Google truncates by pixel width rather than a fixed count, so these are safe guidelines, not hard limits, and longer text may be cut off with an ellipsis in search results. The Text Formatter shows live length meters for both as you type."
+      }
+    }
+  ]
+}
+</script>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500;700&display=swap" rel="stylesheet">
+<script src="https://cdn.tailwindcss.com"></script>
+<script>
+  tailwind.config = {
+    theme: { extend: {
+      fontFamily: { sans: ['Inter', 'system-ui', 'sans-serif'], mono: ['JetBrains Mono', 'ui-monospace', 'monospace'] },
+      colors: { ink: '#09090b', surface: '#18181b', line: '#27272a' }
+    } }
+  };
+</script>
+<style>
+  :root { color-scheme: dark; }
+  html { scroll-behavior: smooth; }
+  body { background: #09090b; color: #e4e4e7; font-family: 'Inter', system-ui, sans-serif; -webkit-font-smoothing: antialiased;
+    background-image: radial-gradient(60rem 28rem at 50% -10rem, rgba(99,102,241,.16), transparent 70%); background-repeat: no-repeat; }
+  .num { font-family: 'JetBrains Mono', ui-monospace, monospace; font-variant-numeric: tabular-nums; }
+  .card { background: #18181b; border: 1px solid #27272a; border-radius: 1rem; transition: border-color .2s, box-shadow .2s; }
+  .card:hover { border-color: rgba(129,140,248,.5); box-shadow: 0 0 0 1px rgba(99,102,241,.12), 0 12px 44px -14px rgba(124,58,237,.45); }
+  .label { display: block; font-size: .8125rem; font-weight: 500; color: #a1a1aa; margin-bottom: .375rem; }
+  .field-wrap { position: relative; }
+  .field-wrap .affix { position: absolute; top: 50%; transform: translateY(-50%); color: #71717a; font-size: .875rem; pointer-events: none; }
+  .field-wrap .pre { left: .8rem; } .field-wrap .post { right: .8rem; }
+  .field, select.field { width: 100%; background: #09090b; border: 1px solid #27272a; border-radius: .625rem; padding: .625rem .8rem; color: #fafafa; font-size: .9375rem; transition: border-color .15s, box-shadow .15s; }
+  .field.has-pre { padding-left: 1.9rem; } .field.has-post { padding-right: 2rem; }
+  .field:hover { border-color: #3f3f46; }
+  .field:focus { outline: none; border-color: #818cf8; box-shadow: 0 0 0 3px rgba(99,102,241,.25); }
+  textarea.field { resize: vertical; line-height: 1.6; min-height: 16rem; }
+  .btn { display: inline-flex; align-items: center; justify-content: center; gap: .4rem; padding: .55rem .9rem; border-radius: .625rem; font-size: .875rem; font-weight: 500; color: #e4e4e7; background: #09090b; border: 1px solid #27272a; cursor: pointer; transition: background .15s, border-color .15s, box-shadow .15s, transform .1s; }
+  .btn:hover:not(:disabled) { border-color: #6366f1; background: #1e1b4b55; box-shadow: 0 0 18px -4px rgba(99,102,241,.55); }
+  .btn:active:not(:disabled) { transform: translateY(1px); }
+  .btn:disabled { opacity: .45; cursor: not-allowed; }
+  .btn-primary { background: linear-gradient(135deg, #6366f1, #7c3aed); border-color: transparent; color: #fff; font-weight: 600; }
+  .btn-primary:hover:not(:disabled) { background: linear-gradient(135deg, #7173f5, #8b4cf5); border-color: transparent; box-shadow: 0 0 26px -2px rgba(124,58,237,.7); }
+  :focus-visible { outline: 2px solid #a5b4fc; outline-offset: 2px; }
+  .tab { padding: .55rem 1rem; border-radius: .625rem; font-size: .875rem; font-weight: 500; color: #a1a1aa; cursor: pointer; transition: color .15s, background .15s; white-space: nowrap; }
+  .tab:hover { color: #fafafa; }
+  .tab[aria-selected="true"] { color: #fff; background: linear-gradient(135deg, rgba(99,102,241,.35), rgba(124,58,237,.35)); box-shadow: inset 0 0 0 1px rgba(129,140,248,.5); }
+  input[type="range"] { width: 100%; accent-color: #818cf8; height: 1.5rem; cursor: pointer; }
+  input[type="range"]:disabled { opacity: .4; cursor: not-allowed; }
+  .drop { border: 1.5px dashed #3f3f46; border-radius: .875rem; padding: 2rem 1rem; text-align: center; cursor: pointer; transition: border-color .15s, background .15s; }
+  .drop:hover, .drop.over { border-color: #818cf8; background: rgba(99,102,241,.08); }
+  .checker { background-color: #0f0f12; background-image: linear-gradient(45deg,#1c1c21 25%,transparent 25%),linear-gradient(-45deg,#1c1c21 25%,transparent 25%),linear-gradient(45deg,transparent 75%,#1c1c21 75%),linear-gradient(-45deg,transparent 75%,#1c1c21 75%); background-size: 16px 16px; background-position: 0 0,0 8px,8px -8px,-8px 0; }
+  .seg { height: 100%; transition: width .3s ease; }
+  .meter > span { display: block; height: 100%; border-radius: 999px; background: #818cf8; transition: width .25s ease, background .25s; }
+  #toasts { position: fixed; left: 50%; bottom: 1.25rem; transform: translateX(-50%); display: flex; flex-direction: column; gap: .5rem; align-items: center; z-index: 50; width: calc(100% - 2rem); max-width: 26rem; pointer-events: none; }
+  .toast { display: flex; align-items: center; gap: .6rem; background: #18181b; border: 1px solid #3f3f46; color: #fafafa; padding: .65rem .9rem; border-radius: .75rem; font-size: .875rem; box-shadow: 0 10px 40px rgba(0,0,0,.6); opacity: 0; transform: translateY(8px); transition: opacity .2s, transform .2s; }
+  .toast::before { content: ""; width: .5rem; height: .5rem; border-radius: 999px; background: #34d399; flex: none; }
+  .toast-error::before { background: #f87171; } .toast-info::before { background: #818cf8; }
+  .toast.show { opacity: 1; transform: none; }
+  @media (prefers-reduced-motion: reduce) { * { transition: none !important; scroll-behavior: auto !important; } }
+  .faq summary { list-style: none; cursor: pointer; display: flex; align-items: center; justify-content: space-between; gap: 1rem; padding: 1rem 1.25rem; border-radius: 1rem; }
+  .faq summary::-webkit-details-marker { display: none; }
+  .faq summary::after { content: ""; flex: none; width: .5rem; height: .5rem; border-right: 2px solid #a1a1aa; border-bottom: 2px solid #a1a1aa; transform: rotate(45deg); transition: transform .2s; margin-top: -.2rem; }
+  .faq[open] summary::after { transform: rotate(-135deg); margin-top: .2rem; }
+  .faq[open] { border-color: rgba(129,140,248,.5); }
+</style>
+</head>
+<body class="min-h-screen">
+<div class="mx-auto max-w-6xl px-4 sm:px-6 py-8 sm:py-12">
+
+  <header class="mb-8">
+    <div class="flex flex-wrap items-center justify-between gap-3">
+      <a href="/" class="flex items-center gap-2.5 text-white" aria-label="KitMint home">
+        <svg width="36" height="36" viewBox="0 0 32 32" fill="none" aria-hidden="true"><defs><linearGradient id="km" x1="2" y1="2" x2="30" y2="30" gradientUnits="userSpaceOnUse"><stop stop-color="#6366f1"/><stop offset="1" stop-color="#10b981"/></linearGradient></defs><rect width="32" height="32" rx="9" fill="url(#km)"/><path d="M11 8.5v15M11 16.5l9.5-8M14.8 14l6.2 9.5" stroke="#fff" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round"/></svg>
+        <span class="text-xl font-bold tracking-tight">KitMint</span>
+      </a>
+      <p class="inline-flex items-center gap-2 rounded-full border border-emerald-500/30 bg-emerald-500/10 px-3 py-1 text-xs font-medium text-emerald-300">
+        <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 3l7 3v5c0 5-3 8-7 10-4-2-7-5-7-10V6l7-3z"/><path d="M9 12l2 2 4-4"/></svg>
+        100% Client-Side • Zero Uploads • Free Forever
+      </p>
+    </div>
+    <div class="mt-10 mb-6 max-w-3xl">
+      <h1 class="text-3xl sm:text-4xl font-bold tracking-tight text-white">Fast, private browser tools for creators and online sellers.</h1>
+      <p class="mt-3 text-zinc-400 max-w-xl">Compress images, check your margins and clean up copy. Your files and numbers never leave your device.</p>
+    </div>
+    <nav role="tablist" aria-label="Tools" class="inline-flex max-w-full gap-1 p-1 rounded-xl bg-surface border border-line overflow-x-auto self-start">
+      <button role="tab" class="tab" id="tab-image" data-tab="image" aria-controls="panel-image" aria-selected="true">Image optimizer</button>
+      <button role="tab" class="tab" id="tab-profit" data-tab="profit" aria-controls="panel-profit" aria-selected="false" tabindex="-1">Profit calculator</button>
+      <button role="tab" class="tab" id="tab-text" data-tab="text" aria-controls="panel-text" aria-selected="false" tabindex="-1">Text formatter</button>
+    </nav>
+  </header>
+
+  <main>
+    <!-- IMAGE OPTIMIZER -->
+    <section id="panel-image" role="tabpanel" aria-labelledby="tab-image" class="grid gap-4 lg:grid-cols-3">
+      <div class="card p-5 lg:col-span-2">
+        <h2 class="text-base font-semibold text-white mb-4">Add an image</h2>
+        <div id="drop" class="drop" role="button" tabindex="0" aria-label="Choose an image or drop it here">
+          <svg class="mx-auto mb-3 text-indigo-400" width="34" height="34" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 16V4m0 0l-4 4m4-4l4 4"/><path d="M4 16v3a1 1 0 001 1h14a1 1 0 001-1v-3"/></svg>
+          <p class="text-sm text-zinc-200 font-medium">Drop a PNG, JPG or WebP here, or click to browse</p>
+          <p class="text-xs text-zinc-500 mt-1">Processed locally with your browser’s canvas</p>
+          <input id="file" type="file" accept="image/png,image/jpeg,image/webp" class="hidden">
+        </div>
+        <div id="previews" class="grid sm:grid-cols-2 gap-4 mt-5" hidden>
+          <figure>
+            <figcaption class="label">Original <span id="origMeta" class="num text-zinc-500"></span></figcaption>
+            <div class="checker rounded-xl border border-line h-52 grid place-items-center overflow-hidden"><img id="origImg" alt="Original image preview" class="max-h-full max-w-full object-contain"></div>
+          </figure>
+          <figure>
+            <figcaption class="label">Optimized <span id="outMeta" class="num text-zinc-500"></span></figcaption>
+            <div class="checker rounded-xl border border-line h-52 grid place-items-center overflow-hidden"><img id="outImg" alt="Optimized image preview" class="max-h-full max-w-full object-contain"></div>
+          </figure>
+        </div>
+      </div>
+
+      <div class="grid gap-4 content-start">
+        <div class="card p-5">
+          <h2 class="text-base font-semibold text-white mb-4">Settings</h2>
+          <div class="flex items-center justify-between">
+            <label for="quality" class="label !mb-0">Quality</label>
+            <span id="qval" class="num text-sm text-indigo-300">80%</span>
+          </div>
+          <input id="quality" type="range" min="10" max="100" step="1" value="80" class="mt-2">
+          <p id="pngNote" class="text-xs text-amber-400 mt-1" hidden>PNG is lossless, so quality doesn’t change its size. Pick WebP or JPEG to compress.</p>
+          <label for="format" class="label mt-4">Convert to</label>
+          <select id="format" class="field">
+            <option value="image/webp">WebP (smallest)</option>
+            <option value="image/jpeg">JPEG</option>
+            <option value="image/png">PNG</option>
+          </select>
+          <button id="download" class="btn btn-primary w-full mt-5" disabled>
+            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 4v12m0 0l-4-4m4 4l4-4"/><path d="M4 20h16"/></svg>
+            Download image
+          </button>
+        </div>
+        <div class="card p-5">
+          <h2 class="text-base font-semibold text-white mb-4">Size comparison</h2>
+          <dl class="grid grid-cols-2 gap-4">
+            <div><dt class="label">Original</dt><dd id="sizeOrig" class="num text-xl text-white">–</dd></div>
+            <div><dt class="label">Optimized</dt><dd id="sizeOut" class="num text-xl text-white">–</dd></div>
+          </dl>
+          <div class="mt-4 pt-4 border-t border-line">
+            <p id="saved" class="num text-2xl font-bold text-zinc-500">–</p>
+            <p id="savedNote" class="text-xs text-zinc-500 mt-1">Add an image to see how much you save.</p>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- PROFIT CALCULATOR -->
+    <section id="panel-profit" role="tabpanel" aria-labelledby="tab-profit" class="grid gap-4 lg:grid-cols-3" hidden>
+      <div class="card p-5 lg:col-span-2">
+        <div class="flex items-center justify-between mb-4">
+          <h2 class="text-base font-semibold text-white">Per-unit economics</h2>
+          <div class="flex items-center gap-2">
+            <label for="currency" class="text-xs text-zinc-500">Currency</label>
+            <select id="currency" class="field !w-auto !py-1.5 text-sm">
+              <option value="USD">USD</option><option value="EUR">EUR</option><option value="GBP">GBP</option><option value="INR">INR</option>
+            </select>
+          </div>
+        </div>
+        <div class="grid sm:grid-cols-2 gap-4">
+          <div><label class="label" for="price">Selling price</label><div class="field-wrap"><span class="affix pre cur">$</span><input id="price" class="field has-pre num" type="number" inputmode="decimal" min="0" step="0.01" value="49.99"></div></div>
+          <div><label class="label" for="cost">Product cost</label><div class="field-wrap"><span class="affix pre cur">$</span><input id="cost" class="field has-pre num" type="number" inputmode="decimal" min="0" step="0.01" value="14.00"></div></div>
+          <div><label class="label" for="ship">Shipping cost</label><div class="field-wrap"><span class="affix pre cur">$</span><input id="ship" class="field has-pre num" type="number" inputmode="decimal" min="0" step="0.01" value="5.50"></div></div>
+          <div><label class="label" for="pack">Packaging cost</label><div class="field-wrap"><span class="affix pre cur">$</span><input id="pack" class="field has-pre num" type="number" inputmode="decimal" min="0" step="0.01" value="1.20"></div></div>
+          <div><label class="label" for="fee">Platform fee</label><div class="field-wrap"><input id="fee" class="field has-post num" type="number" inputmode="decimal" min="0" max="100" step="0.1" value="8"><span class="affix post">%</span></div></div>
+          <div><label class="label" for="ads">Ad spend per sale</label><div class="field-wrap"><span class="affix pre cur">$</span><input id="ads" class="field has-pre num" type="number" inputmode="decimal" min="0" step="0.01" value="9.00"></div></div>
+        </div>
+        <p class="text-xs text-zinc-500 mt-4">Platform fee is taken from the selling price. Ad spend is what you pay to win one sale.</p>
+      </div>
+
+      <div class="grid gap-4 content-start">
+        <div class="card p-5">
+          <p class="label">Net profit per unit</p>
+          <p id="net" class="num text-3xl font-bold text-white">–</p>
+          <p id="margin" class="num text-sm text-zinc-400 mt-1">–</p>
+        </div>
+        <div class="card p-5">
+          <p class="label">Break-even ROAS</p>
+          <p id="beRoas" class="num text-3xl font-bold text-white">–</p>
+          <p id="roasNote" class="text-xs text-zinc-500 mt-1">–</p>
+        </div>
+      </div>
+
+      <div class="card p-5 lg:col-span-3">
+        <h2 class="text-base font-semibold text-white mb-4">Where each sale goes</h2>
+        <div id="bar" class="flex h-4 w-full rounded-full overflow-hidden bg-zinc-900 border border-line" role="img" aria-label="Cost and profit breakdown"></div>
+        <ul id="legend" class="mt-5 grid grid-cols-2 sm:grid-cols-5 gap-4"></ul>
+      </div>
+    </section>
+
+    <!-- TEXT FORMATTER -->
+    <section id="panel-text" role="tabpanel" aria-labelledby="tab-text" class="grid gap-4 lg:grid-cols-3" hidden>
+      <div class="card p-5 lg:col-span-2">
+        <label for="txt" class="text-base font-semibold text-white block mb-3">Your text</label>
+        <textarea id="txt" class="field" placeholder="Paste a product title, meta description or any copy…" spellcheck="true"></textarea>
+        <div class="flex flex-wrap gap-2 mt-4">
+          <button class="btn" data-act="title">Title Case</button>
+          <button class="btn" data-act="upper">UPPERCASE</button>
+          <button class="btn" data-act="lower">lowercase</button>
+          <button class="btn" data-act="spaces">Remove extra spaces</button>
+          <button class="btn" id="undo" disabled>Undo</button>
+          <button class="btn btn-primary ml-auto" id="copy">Copy to clipboard</button>
+        </div>
+      </div>
+      <div class="grid gap-4 content-start">
+        <div class="card p-5">
+          <dl class="grid grid-cols-3 gap-3">
+            <div><dt class="label">Characters</dt><dd id="cChars" class="num text-xl text-white">0</dd></div>
+            <div><dt class="label">Words</dt><dd id="cWords" class="num text-xl text-white">0</dd></div>
+            <div><dt class="label">Reading time</dt><dd id="cRead" class="num text-xl text-white">0s</dd></div>
+          </dl>
+        </div>
+        <div class="card p-5">
+          <h2 class="text-base font-semibold text-white mb-4">Search snippet length</h2>
+          <div class="flex justify-between text-xs text-zinc-400 mb-1"><span>Title tag (up to 60)</span><span id="tLen" class="num">0 / 60</span></div>
+          <div class="meter h-1.5 rounded-full bg-zinc-900 mb-4"><span id="tBar" style="width:0%"></span></div>
+          <div class="flex justify-between text-xs text-zinc-400 mb-1"><span>Meta description (up to 160)</span><span id="mLen" class="num">0 / 160</span></div>
+          <div class="meter h-1.5 rounded-full bg-zinc-900"><span id="mBar" style="width:0%"></span></div>
+        </div>
+      </div>
+    </section>
+  </main>
+
+  <section class="mt-14" aria-labelledby="why-title">
+    <h2 id="why-title" class="text-xl sm:text-2xl font-bold tracking-tight text-white">Free online tools for image compression, profit margins and SEO</h2>
+    <p class="mt-2 max-w-2xl text-sm text-zinc-400">Three focused tools in one fast page. No sign-up, no watermarks and no server in the middle.</p>
+    <div class="mt-6 grid gap-4 md:grid-cols-3">
+        <article class="card p-5">
+          <h3 class="text-base font-semibold text-white">Client-side image compression</h3>
+          <p class="mt-2 text-sm leading-relaxed text-zinc-400">Shrink PNG, JPG and WebP files without sending them anywhere. KitMint re-encodes images in your browser with the HTML5 Canvas API, so product photos, thumbnails and banners load faster and your originals stay on your device. Adjust quality from 10% to 100% and convert to WebP, JPEG or PNG.</p>
+        </article>
+        <article class="card p-5">
+          <h3 class="text-base font-semibold text-white">E-commerce unit economics and ROAS math</h3>
+          <p class="mt-2 text-sm leading-relaxed text-zinc-400">See your real net profit, profit margin and break-even ROAS per unit before you scale ad spend. Enter selling price, product cost, shipping, packaging, platform fee and ad spend, and watch the breakdown update instantly for Etsy, Shopify, Amazon or any marketplace.</p>
+        </article>
+        <article class="card p-5">
+          <h3 class="text-base font-semibold text-white">Google SERP title and meta length optimization</h3>
+          <p class="mt-2 text-sm leading-relaxed text-zinc-400">Write search snippets that don’t get cut off. The Text Formatter counts characters, words and reading time, shows live meters against the 60-character title and 160-character meta description guidelines, and converts text to Title Case, UPPERCASE or lowercase in one click.</p>
+        </article>
+    </div>
+  </section>
+
+  <section class="mt-14" aria-labelledby="faq-title">
+    <h2 id="faq-title" class="text-xl sm:text-2xl font-bold tracking-tight text-white">Frequently asked questions</h2>
+    <div class="mt-6 grid gap-3 max-w-3xl">
+        <details class="faq card">
+          <summary><h3 class="text-base font-medium text-white">Are my images and financial numbers uploaded to a server?</h3></summary>
+          <p class="px-5 pb-5 text-sm leading-relaxed text-zinc-400">No. KitMint runs entirely in your browser. Images are decoded and re-encoded with the HTML5 Canvas API, and your profit, margin and ROAS figures are calculated with JavaScript on your own device. Nothing is uploaded, stored or sent anywhere, so your files and numbers stay private. Close the tab and everything is gone.</p>
+        </details>
+        <details class="faq card">
+          <summary><h3 class="text-base font-medium text-white">How do I compress PNG or JPG images to WebP without losing quality?</h3></summary>
+          <p class="px-5 pb-5 text-sm leading-relaxed text-zinc-400">Drop your image into the Image Optimizer, choose WebP in the Convert to menu, and set the quality slider between 75% and 85%. At those settings WebP is usually far smaller than PNG or JPEG with no visible difference. The side-by-side preview and the size comparison show the result before you download, so you can raise the quality if you spot any change.</p>
+        </details>
+        <details class="faq card">
+          <summary><h3 class="text-base font-medium text-white">How is Break-Even ROAS calculated for e-commerce products?</h3></summary>
+          <p class="px-5 pb-5 text-sm leading-relaxed text-zinc-400">Break-even ROAS equals your selling price divided by your profit before ad spend. First subtract the product cost, shipping, packaging and platform fee from the selling price. For example, a 50 selling price with 30 in costs leaves 20 before ads, so break-even ROAS is 50 divided by 20, or 2.5x. If your ads return more than 2.5 in revenue for every 1 spent, each sale makes a profit.</p>
+        </details>
+        <details class="faq card">
+          <summary><h3 class="text-base font-medium text-white">What is the ideal character limit for Google Title Tags and Meta Descriptions?</h3></summary>
+          <p class="px-5 pb-5 text-sm leading-relaxed text-zinc-400">Aim for about 60 characters for title tags and about 160 characters for meta descriptions. Google truncates by pixel width rather than a fixed count, so these are safe guidelines, not hard limits, and longer text may be cut off with an ellipsis in search results. The Text Formatter shows live length meters for both as you type.</p>
+        </details>
+    </div>
+  </section>
+
+  <footer class="mt-14 border-t border-line pt-6 text-center text-xs text-zinc-500">© 2026 KitMint. Built for speed and privacy.</footer>
+</div>
+
+<div id="toasts" aria-live="polite" aria-atomic="false"></div>
+
+<script>
+(() => {
+  'use strict';
+  const $ = (s, r = document) => r.querySelector(s);
+  const $$ = (s, r = document) => Array.from(r.querySelectorAll(s));
+
+  /* ---------- Toasts ---------- */
+  function toast(msg, type = 'success') {
+    const el = document.createElement('div');
+    el.className = 'toast toast-' + type;
+    el.textContent = msg;
+    $('#toasts').appendChild(el);
+    requestAnimationFrame(() => el.classList.add('show'));
+    setTimeout(() => { el.classList.remove('show'); setTimeout(() => el.remove(), 250); }, 2600);
+  }
+
+  /* ---------- Tabs ---------- */
+  const tabs = $$('[role="tab"]');
+  function activate(id, focus) {
+    if (!tabs.some(t => t.dataset.tab === id)) id = 'image';
+    tabs.forEach(t => {
+      const on = t.dataset.tab === id;
+      t.setAttribute('aria-selected', String(on));
+      t.tabIndex = on ? 0 : -1;
+      if (on && focus) t.focus();
+    });
+    $$('[role="tabpanel"]').forEach(p => { p.hidden = p.id !== 'panel-' + id; });
+    try { history.replaceState(null, '', '#' + id); } catch (e) { /* ignore on restricted origins */ }
+  }
+  tabs.forEach((t, i) => {
+    t.addEventListener('click', () => activate(t.dataset.tab));
+    t.addEventListener('keydown', e => {
+      if (e.key !== 'ArrowRight' && e.key !== 'ArrowLeft') return;
+      e.preventDefault();
+      const n = (i + (e.key === 'ArrowRight' ? 1 : tabs.length - 1)) % tabs.length;
+      activate(tabs[n].dataset.tab, true);
+    });
+  });
+  activate(location.hash.slice(1));
+
+  /* ---------- Image optimizer ---------- */
+  const fmtBytes = b => {
+    if (b < 1024) return b + ' B';
+    if (b < 1048576) return (b / 1024).toFixed(1) + ' KB';
+    return (b / 1048576).toFixed(2) + ' MB';
+  };
+  const EXT = { 'image/webp': 'webp', 'image/jpeg': 'jpg', 'image/png': 'png' };
+  const NAME = { 'image/webp': 'WebP', 'image/jpeg': 'JPEG', 'image/png': 'PNG' };
+  const im = { file: null, el: null, origUrl: null, outUrl: null, blob: null, seq: 0, timer: null };
+  const drop = $('#drop'), fileInput = $('#file'), quality = $('#quality'), format = $('#format');
+
+  drop.addEventListener('click', () => fileInput.click());
+  drop.addEventListener('keydown', e => { if (e.key === 'Enter' || e.key === ' ') { e.preventDefault(); fileInput.click(); } });
+  fileInput.addEventListener('click', e => e.stopPropagation());
+  fileInput.addEventListener('change', () => { loadFile(fileInput.files[0]); fileInput.value = ''; });
+  ['dragenter', 'dragover'].forEach(ev => drop.addEventListener(ev, e => { e.preventDefault(); drop.classList.add('over'); }));
+  ['dragleave', 'drop'].forEach(ev => drop.addEventListener(ev, e => { e.preventDefault(); drop.classList.remove('over'); }));
+  drop.addEventListener('drop', e => loadFile(e.dataTransfer.files[0]));
+  document.addEventListener('dragover', e => e.preventDefault());
+  document.addEventListener('drop', e => e.preventDefault());
+
+  function loadFile(file) {
+    if (!file) return;
+    if (!/^image\/(png|jpeg|webp)$/.test(file.type)) { toast('Choose a PNG, JPG or WebP image.', 'error'); return; }
+    const url = URL.createObjectURL(file);
+    const el = new Image();
+    el.onload = () => {
+      if (im.origUrl) URL.revokeObjectURL(im.origUrl);
+      im.file = file; im.el = el; im.origUrl = url;
+      $('#origImg').src = url;
+      $('#origMeta').textContent = el.naturalWidth + '×' + el.naturalHeight + ' · ' + fmtBytes(file.size);
+      $('#sizeOrig').textContent = fmtBytes(file.size);
+      $('#previews').hidden = false;
+      // Keep PNG sources lossless by default; otherwise suggest WebP.
+      toast('Image loaded', 'info');
+      optimize();
+    };
+    el.onerror = () => { URL.revokeObjectURL(url); toast('That image couldn’t be read. Try another file.', 'error'); };
+    el.src = url;
+  }
+
+  function optimize() {
+    if (!im.el) return;
+    const mime = format.value, isPng = mime === 'image/png';
+    $('#qval').textContent = quality.value + '%';
+    quality.disabled = isPng;
+    $('#pngNote').hidden = !isPng;
+    const seq = ++im.seq;
+    const c = document.createElement('canvas');
+    c.width = im.el.naturalWidth; c.height = im.el.naturalHeight;
+    const ctx = c.getContext('2d');
+    if (mime === 'image/jpeg') { ctx.fillStyle = '#ffffff'; ctx.fillRect(0, 0, c.width, c.height); }
+    ctx.drawImage(im.el, 0, 0);
+    c.toBlob(blob => {
+      if (seq !== im.seq) return;
+      if (!blob) { toast('This image couldn’t be encoded. Try a smaller file.', 'error'); return; }
+      if (blob.type !== mime) toast('Your browser can’t encode ' + NAME[mime] + ', so it saved ' + (NAME[blob.type] || blob.type) + ' instead.', 'error');
+      if (im.outUrl) URL.revokeObjectURL(im.outUrl);
+      im.blob = blob; im.outUrl = URL.createObjectURL(blob);
+      $('#outImg').src = im.outUrl;
+      $('#outMeta').textContent = c.width + '×' + c.height + ' · ' + fmtBytes(blob.size);
+      $('#sizeOut').textContent = fmtBytes(blob.size);
+      const pct = (1 - blob.size / im.file.size) * 100;
+      const s = $('#saved'), n = $('#savedNote');
+      s.classList.remove('text-zinc-500', 'text-emerald-400', 'text-amber-400');
+      if (pct >= 0) { s.textContent = pct.toFixed(1) + '% saved'; s.classList.add('text-emerald-400'); n.textContent = fmtBytes(im.file.size - blob.size) + ' smaller than the original.'; }
+      else { s.textContent = Math.abs(pct).toFixed(1) + '% larger'; s.classList.add('text-amber-400'); n.textContent = 'Try a lower quality or WebP to reduce the size.'; }
+      $('#download').disabled = false;
+    }, mime, isPng ? undefined : quality.value / 100);
+  }
+
+  quality.addEventListener('input', () => { $('#qval').textContent = quality.value + '%'; clearTimeout(im.timer); im.timer = setTimeout(optimize, 120); });
+  format.addEventListener('change', optimize);
+
+  $('#download').addEventListener('click', () => {
+    if (!im.blob) return;
+    const base = im.file.name.replace(/\.[^.]+$/, '') || 'image';
+    const a = document.createElement('a');
+    a.href = im.outUrl;
+    a.download = base + '-optimized.' + (EXT[im.blob.type] || 'img');
+    document.body.appendChild(a); a.click(); a.remove();
+    toast('Download started');
+  });
+
+  /* ---------- Profit calculator ---------- */
+  const ids = ['price', 'cost', 'ship', 'pack', 'fee', 'ads'];
+  const val = id => { const v = parseFloat($('#' + id).value); return isFinite(v) && v > 0 ? v : 0; };
+  const cur = $('#currency');
+  const money = n => new Intl.NumberFormat(undefined, { style: 'currency', currency: cur.value }).format(n);
+  const pctFmt = n => n.toFixed(1) + '%';
+  const COLORS = { product: '#6366f1', logistics: '#8b5cf6', fees: '#a78bfa', ads: '#d946ef', profit: '#34d399' };
+
+  function calc() {
+    const price = val('price'), cost = val('cost'), ship = val('ship'), pack = val('pack'), ads = val('ads');
+    const feeAmt = price * Math.min(val('fee'), 100) / 100;
+    const logistics = ship + pack;
+    const total = cost + logistics + feeAmt + ads;
+    const net = price - total;
+    const margin = price > 0 ? net / price * 100 : 0;
+    const contribution = price - cost - logistics - feeAmt; // profit before ad spend
+    const be = contribution > 0 && price > 0 ? price / contribution : null;
+
+    const netEl = $('#net');
+    netEl.textContent = money(net);
+    netEl.className = 'num text-3xl font-bold ' + (net > 0 ? 'text-emerald-400' : net < 0 ? 'text-red-400' : 'text-white');
+    $('#margin').textContent = price > 0 ? pctFmt(margin) + ' profit margin' : 'Enter a selling price';
+
+    $('#beRoas').textContent = be ? be.toFixed(2) + 'x' : '–';
+    let note;
+    if (price <= 0) note = 'Enter a selling price to see your break-even.';
+    else if (!be) note = 'Costs already exceed the price before ads, so no ROAS can break even.';
+    else if (ads > 0) {
+      const roas = price / ads;
+      note = 'Your ROAS is ' + roas.toFixed(2) + 'x. ' + (roas >= be ? 'That’s above break-even, so ads are paying for themselves.' : 'That’s below break-even, so each sale loses money.');
+    } else note = 'Your ROAS needs to stay above this to profit from ads.';
+    $('#roasNote').textContent = note;
+
+    const base = Math.max(price, total);
+    const parts = [
+      ['Product', cost, COLORS.product], ['Shipping and packaging', logistics, COLORS.logistics],
+      ['Platform fee', feeAmt, COLORS.fees], ['Ad spend', ads, COLORS.ads], ['Profit', Math.max(net, 0), COLORS.profit]
+    ];
+    const bar = $('#bar'), legend = $('#legend');
+    bar.textContent = ''; legend.textContent = '';
+    parts.forEach(([name, amount, color]) => {
+      const w = base > 0 ? amount / base * 100 : 0;
+      const seg = document.createElement('div');
+      seg.className = 'seg'; seg.style.width = w + '%'; seg.style.background = color;
+      bar.appendChild(seg);
+      const li = document.createElement('li');
+      li.innerHTML = '<div class="flex items-center gap-2 text-xs text-zinc-400"><span class="inline-block h-2.5 w-2.5 rounded-sm"></span><span class="n"></span></div><p class="num text-lg text-white mt-1 a"></p><p class="num text-xs text-zinc-500 p"></p>';
+      li.querySelector('span.inline-block').style.background = color;
+      li.querySelector('.n').textContent = name;
+      li.querySelector('.a').textContent = money(amount);
+      li.querySelector('.p').textContent = (price > 0 ? pctFmt(amount / price * 100) : '0.0%') + ' of price';
+      legend.appendChild(li);
+    });
+  }
+  function setSymbol() {
+    const part = new Intl.NumberFormat(undefined, { style: 'currency', currency: cur.value }).formatToParts(0).find(p => p.type === 'currency');
+    $$('.cur').forEach(s => { s.textContent = part ? part.value : cur.value; });
+    $$('.cur').forEach(s => { s.nextElementSibling && s.nextElementSibling.classList.toggle('has-pre', true); });
+    const long = (part ? part.value : cur.value).length > 1;
+    ids.filter(i => i !== 'fee').forEach(i => { $('#' + i).style.paddingLeft = long ? '2.6rem' : ''; });
+  }
+  ids.forEach(id => $('#' + id).addEventListener('input', calc));
+  cur.addEventListener('change', () => { setSymbol(); calc(); });
+  setSymbol(); calc();
+
+  /* ---------- Text formatter ---------- */
+  const txt = $('#txt');
+  let history_ = [];
+  const SMALL = new Set(['a', 'an', 'and', 'as', 'at', 'but', 'by', 'for', 'in', 'nor', 'of', 'on', 'or', 'the', 'to', 'up', 'via', 'vs']);
+
+  function toTitleCase(s) {
+    let first = true;
+    return s.toLowerCase().replace(/\S+/g, w => {
+      const bare = w.replace(/[^a-z]/g, '');
+      if (!first && SMALL.has(bare)) return w;
+      first = false;
+      return w.replace(/[a-z\u00e0-\u00ff]/, c => c.toUpperCase());
+    });
+  }
+  const cleanSpaces = s => s.replace(/[^\S\n]+/g, ' ').split('\n').map(l => l.trim()).join('\n').replace(/\n{3,}/g, '\n\n').trim();
+
+  function stats() {
+    const t = txt.value, len = t.length;
+    const words = (t.match(/\S+/g) || []).length;
+    const secs = Math.ceil(words / 200 * 60);
+    $('#cChars').textContent = len.toLocaleString();
+    $('#cWords').textContent = words.toLocaleString();
+    $('#cRead').textContent = secs < 60 ? secs + 's' : Math.floor(secs / 60) + 'm ' + (secs % 60) + 's';
+    [['t', 60], ['m', 160]].forEach(([k, max]) => {
+      $('#' + k + 'Len').textContent = len + ' / ' + max;
+      const bar = $('#' + k + 'Bar');
+      bar.style.width = Math.min(len / max * 100, 100) + '%';
+      bar.style.background = len > max ? '#fbbf24' : '#818cf8';
+    });
+  }
+  function apply(fn, label) {
+    if (!txt.value.trim()) { toast('Add some text first.', 'error'); return; }
+    const next = fn(txt.value);
+    if (next === txt.value) { toast('Nothing to change.', 'info'); return; }
+    history_.push(txt.value); if (history_.length > 30) history_.shift();
+    txt.value = next; $('#undo').disabled = false; stats(); toast(label);
+  }
+  $$('[data-act]').forEach(b => b.addEventListener('click', () => {
+    const a = b.dataset.act;
+    if (a === 'title') apply(toTitleCase, 'Converted to Title Case');
+    if (a === 'upper') apply(s => s.toUpperCase(), 'Converted to UPPERCASE');
+    if (a === 'lower') apply(s => s.toLowerCase(), 'Converted to lowercase');
+    if (a === 'spaces') apply(cleanSpaces, 'Extra spaces removed');
+  }));
+  $('#undo').addEventListener('click', () => {
+    if (!history_.length) return;
+    txt.value = history_.pop(); $('#undo').disabled = !history_.length; stats(); toast('Undone', 'info');
+  });
+  $('#copy').addEventListener('click', async () => {
+    if (!txt.value) { toast('Nothing to copy yet.', 'error'); return; }
+    try {
+      if (navigator.clipboard && window.isSecureContext) await navigator.clipboard.writeText(txt.value);
+      else { txt.select(); if (!document.execCommand('copy')) throw new Error('copy failed'); txt.setSelectionRange(txt.value.length, txt.value.length); }
+      toast('Copied to clipboard');
+    } catch (e) { toast('Copy failed. Select the text and press Ctrl+C.', 'error'); }
+  });
+  txt.addEventListener('input', stats);
+  stats();
+})();
+</script>
+</body>
+</html>

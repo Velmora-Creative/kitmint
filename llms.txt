@@ -1,0 +1,8 @@
+# KitMint
+
+> KitMint is a free, privacy-first browser utility hub for digital creators and e-commerce sellers. All tools run 100% client-side with zero server uploads.
+
+## Core Tools
+- **Client-Side Image Optimizer & Converter**: Compress PNG, JPG, and WebP images locally using HTML5 Canvas with custom quality sliders.
+- **E-Commerce Profit & Margin Calculator**: Calculate net profit per unit, profit margin percentages, and break-even ROAS across multiple currencies (USD, EUR, GBP, INR).
+- **SEO Text & Snippet Formatter**: Live character/word counter, case converter, and Google Title Tag (60 chars) & Meta Description (160 chars) length checker.
